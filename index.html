@@ -17,6 +17,7 @@
 <body>
 	<h1>Dibble</h1>
 
+	<h3>Configuration</h3>
 	<form class="uk-form-horizontal" onsubmit="event.preventDefault();">
 
 		<div class="uk-margin">
@@ -29,32 +30,18 @@
 		<div class="uk-margin">
 			<label class="uk-form-label" for="num-variants">Variants</label>
 			<div class="uk-form-controls">
-				<input class="uk-input" id="num-variants" type="number" value="3" min="1" max="26">
+				<input class="uk-input" id="num-variants" type="number" value="6" min="1" max="26">
 			</div>
 		</div>
 
-		<div class="uk-margin">
-			<label class="uk-form-label" for="num-permutations">Permutations</label>
-			<div class="uk-form-controls">
-				<input class="uk-input" id="num-permutations" type="number" value="" disabled>
-			</div>
-		</div>
-
-		<button class="uk-button uk-button-default" onclick="dibble()">Click</button>
+		<button class="uk-button uk-button-default" onclick="dibble()">Generate</button>
 
 	</form>
 
-	<br/>
-	<div class="uk-section uk-section-muted">
-		<div class="uk-container">
-	
-			<h3>Results</h3>
-	
-			<div id="results">
-			</div>
-	
-		</div>
-	</div>
+	<h3>Combinations</h3>
+	<div id="permutations-output-text" style="margin-bottom:20px"></div>
+	<div id="permutations-output-list" style="margin-bottom:20px; font-family: Consolas"></div>
+	<div id="permutations-output-footer"></div>
 </body>
 
 </html>

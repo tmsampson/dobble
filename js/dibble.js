@@ -2,17 +2,16 @@ const alphabet = [ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "
 
 function dibble()
 {
-	// Clear previous results
-	clearResults();
-
 	// Grab values
-	let numSlots = document.getElementById("num-slots").value;
-	let numVariants = document.getElementById("num-variants").value;
+	const numSlots = document.getElementById("num-slots").value;
+	const numVariants = document.getElementById("num-variants").value;
 
 	// Ensure we have enough variants to fill the slots
+	let permutationsOutputText = document.getElementById("permutations-output-text");
+	permutationsOutputText.innerHTML = "";
 	if(numVariants < numSlots)
 	{
-		addResult("Not enough variants to fill all slots.");
+		permutationsOutputText.innerHTML = "Not enough variants to fill all slots.";
 		return false;
 	}
 
@@ -41,8 +40,8 @@ function dibble()
 			}
 
 			// Convert to alphabet (1,2,3 => A,B,C), and conver to sorted string
-			let permutationAlphabetic = currentPermutation.map((slotValue) => alphabet[slotValue]);
-			let permutationString = permutationAlphabetic.sort().join();
+			const permutationAlphabetic = currentPermutation.map((slotValue) => alphabet[slotValue]);
+			const permutationString = permutationAlphabetic.sort().join();
 
 			// Skip if this permutation has already been stored
 			if(permutations.includes(permutationString))
@@ -71,26 +70,27 @@ function dibble()
 	}
 
 	// Print results
-	permutations.forEach(function(permutation)
+	let permutationsOutputList = document.getElementById("permutations-output-list");
+	permutationsOutputText.innerHTML += "This configuration generates <b>" + permutations.length + "</b> unique card combinations, as listed below:";
+	permutationsOutputList.innerHTML = "";
+	const numPermutationDisplayColumns = 7;
+	for(let outputIndex = 0; outputIndex < permutations.length; ++outputIndex)
 	{
-		addResult(permutation);
-		addResult("<br/>");
-	});
+		const permutation = permutations[outputIndex];
+		permutationsOutputList.innerHTML += permutation;
+		permutationsOutputList.innerHTML += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+		if((outputIndex + 1) % numPermutationDisplayColumns == 0)
+		{
+			permutationsOutputList.innerHTML += "<br/>";
+		}
+	}
+	let permutationsOutputFooter = document.getElementById("permutations-output-footer");
+	permutationsOutputFooter.innerHTML = "ℹ: The number of possible combinations can be calculaed as: <b>NumVariants! / (NumVariants - NumSlots)! * NumSlots!</b>";
 }
 
 function onInputsChanged()
 {
-	document.getElementById("num-permutations").value = 100;
-}
-
-function clearResults()
-{
-	document.getElementById("results").innerHTML = "";
-}
-
-function addResult(result)
-{
-	document.getElementById("results").innerHTML += result;
+	
 }
 
 // Perform initial update
