@@ -3,65 +3,65 @@ const alphabet = [ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "
 function dibble()
 {
 	// Grab values
-	const numSlots = document.getElementById("num-slots").value;
-	const numVariants = document.getElementById("num-variants").value;
+	const numSlots = parseInt(document.getElementById("num-slots").value);
+	const numVariants = parseInt(document.getElementById("num-variants").value);
 
 	// Ensure we have enough variants to fill the slots
-	let permutationsOutputText = document.getElementById("permutations-output-text");
-	permutationsOutputText.innerHTML = "";
+	let combinationsOutputText = document.getElementById("combinations-output-text");
+	combinationsOutputText.innerHTML = "";
 	if(numVariants < numSlots)
 	{
-		permutationsOutputText.innerHTML = "Not enough variants to fill all slots.";
+		combinationsOutputText.innerHTML = "Not enough variants to fill all slots.";
 		return false;
 	}
 
-	// Setup permutations
-	let permutations = [];
-	let currentPermutation = [];
+	// Setup combinations
+	let combinations = [];
+	let currentcombination = [];
 	for(let i = 0; i < numSlots; ++i)
 	{
-		currentPermutation.push(0);
+		currentcombination.push(0);
 	}
 
-	// Calculate permutations
+	// Calculate combinations
 	let running = true;
 	while(running)
 	{
 		// Try the last slot index with each variant
 		for(let variant = 0; variant < numVariants; ++variant)
 		{
-			currentPermutation[numSlots - 1] = variant;
+			currentcombination[numSlots - 1] = variant;
 
-			// Skip if this permutations contains the same value in multiple slots
-			const hasDuplicateSlots = (currentPermutation.length !== new Set(currentPermutation).size);
+			// Skip if this combinations contains the same value in multiple slots
+			const hasDuplicateSlots = (currentcombination.length !== new Set(currentcombination).size);
 			if(hasDuplicateSlots)
 			{
 				continue;
 			}
 
 			// Convert to alphabet (1,2,3 => A,B,C), and conver to sorted string
-			const permutationAlphabetic = currentPermutation.map((slotValue) => alphabet[slotValue]);
-			const permutationString = permutationAlphabetic.sort().join();
+			const combinationAlphabetic = currentcombination.map((slotValue) => alphabet[slotValue]);
+			const combinationstring = combinationAlphabetic.sort().join();
 
-			// Skip if this permutation has already been stored
-			if(permutations.includes(permutationString))
+			// Skip if this combination has already been stored
+			if(combinations.includes(combinationstring))
 			{
 				continue;
 			}
 
-			// Store valid permutation
-			permutations.push(permutationString);
+			// Store valid combination
+			combinations.push(combinationstring);
 		}
 
 		running = false;
 		for(let nextSlotIndex = numSlots - 1; nextSlotIndex >= 0; --nextSlotIndex)
 		{
-			if(currentPermutation[nextSlotIndex] < (numVariants - 1))
+			if(currentcombination[nextSlotIndex] < (numVariants - 1))
 			{
-				currentPermutation[nextSlotIndex]++;
+				currentcombination[nextSlotIndex]++;
 				for(let previousSlotIndex = nextSlotIndex + 1; previousSlotIndex < numSlots; ++previousSlotIndex)
 				{
-					currentPermutation[previousSlotIndex] = 0;
+					currentcombination[previousSlotIndex] = 0;
 				}
 				running = true;
 				break;
@@ -69,23 +69,71 @@ function dibble()
 		}
 	}
 
-	// Print results
-	let permutationsOutputList = document.getElementById("permutations-output-list");
-	permutationsOutputText.innerHTML += "This configuration generates <b>" + permutations.length + "</b> unique card combinations, as listed below:";
-	permutationsOutputList.innerHTML = "";
-	const numPermutationDisplayColumns = 7;
-	for(let outputIndex = 0; outputIndex < permutations.length; ++outputIndex)
+	// Print combinations
+	let combinationsOutputList = document.getElementById("combinations-output-list");
+	combinationsOutputText.innerHTML += "This configuration generates <b>" + combinations.length + "</b> unique card combinations, as listed below:";
+	combinationsOutputList.innerHTML = "";
+	const numcombinationDisplayColumns = 7;
+	for(let outputIndex = 0; outputIndex < combinations.length; ++outputIndex)
 	{
-		const permutation = permutations[outputIndex];
-		permutationsOutputList.innerHTML += permutation;
-		permutationsOutputList.innerHTML += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-		if((outputIndex + 1) % numPermutationDisplayColumns == 0)
+		const combination = combinations[outputIndex];
+		combinationsOutputList.innerHTML += combination;
+		combinationsOutputList.innerHTML += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+		if((outputIndex + 1) % numcombinationDisplayColumns == 0)
 		{
-			permutationsOutputList.innerHTML += "<br/>";
+			combinationsOutputList.innerHTML += "<br/>";
 		}
 	}
-	let permutationsOutputFooter = document.getElementById("permutations-output-footer");
-	permutationsOutputFooter.innerHTML = "ℹ: The number of possible combinations can be calculaed as: <b>NumVariants! / (NumVariants - NumSlots)! * NumSlots!</b>";
+	let combinationsOutputFooter = document.getElementById("combinations-output-footer");
+	combinationsOutputFooter.innerHTML = "ℹ The number of unique card combinations can be calculaed as: <b>NumVariants! / (NumVariants - NumSlots)! * NumSlots!</b>";
+	return;
+
+	// Print intersections
+	let intersectionsTable = document.getElementById("intersections-output-table");
+	let tableHtml = "";
+	for(let rowIndex = 0; rowIndex <= combinations.length; ++rowIndex)
+	{
+		tableHtml += "<tr>";
+		const rowCombination = combinations[rowIndex - 1];
+		for(let columnIndex = 0; columnIndex <= combinations.length; ++columnIndex)
+		{
+			if(rowIndex == 0 && columnIndex == 0)
+			{
+				tableHtml += "<th></th>";
+			}
+			else
+			{
+				const colCombination = combinations[columnIndex - 1];
+				if(rowIndex == 0)
+				{
+					tableHtml += "<th>" + colCombination + "</th>";
+				}
+				else if(columnIndex == 0)
+				{
+					tableHtml += "<td><b>" + rowCombination + "</b></td>";
+				}
+				else
+				{
+					// Actual value
+					if(rowCombination == colCombination)
+					{
+						tableHtml += "<td class='intersection-ignore'>X</td>";
+					}
+					else
+					{
+						const rowCombinationSplit = new Set(rowCombination.split(","));
+						const colCombinationSplit = new Set(colCombination.split(","));
+						const intersection = new Set([...rowCombinationSplit].filter(x => colCombinationSplit.has(x)));
+						const cssClass = (intersection.size > 0)? "intersection-valid" : "intersection-none";
+						tableHtml += "<td class='" + cssClass + "'>" + intersection.size + "</td>";
+					}
+				}
+			}
+		}
+		tableHtml += "</tr>";
+	}
+	tableHtml += "</tr>";
+	intersectionsTable.innerHTML = tableHtml;
 }
 
 function onInputsChanged()

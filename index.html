@@ -21,14 +21,14 @@
 	<form class="uk-form-horizontal" onsubmit="event.preventDefault();">
 
 		<div class="uk-margin">
-			<label class="uk-form-label" for="num-slots">Slots</label>
+			<label class="uk-form-label" for="num-slots">Slot Count</label>
 			<div class="uk-form-controls">
 				<input class="uk-input" id="num-slots" type="number" value="3" min="1">
 			</div>
 		</div>
 
 		<div class="uk-margin">
-			<label class="uk-form-label" for="num-variants">Variants</label>
+			<label class="uk-form-label" for="num-variants">Variant Count</label>
 			<div class="uk-form-controls">
 				<input class="uk-input" id="num-variants" type="number" value="6" min="1" max="26">
 			</div>
@@ -39,9 +39,13 @@
 	</form>
 
 	<h3>Combinations</h3>
-	<div id="permutations-output-text" style="margin-bottom:20px"></div>
-	<div id="permutations-output-list" style="margin-bottom:20px; font-family: Consolas"></div>
-	<div id="permutations-output-footer"></div>
+	<div id="combinations-output-text" style="margin-bottom:20px"></div>
+	<div id="combinations-output-list" style="margin-bottom:20px; font-family: Consolas"></div>
+	<div id="combinations-output-footer"></div>
+
+	<h3>Intersections</h3>
+	<table id="intersections-output-table" style="margin-bottom:20px"></table>
+
 </body>
 
 </html>

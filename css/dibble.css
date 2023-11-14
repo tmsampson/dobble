@@ -2,3 +2,32 @@ body
 {
 	margin:20px;
 }
+
+td
+{
+	text-align: center;
+	border:1px solid gray;
+}
+
+td:first-child
+{
+	border:0px;
+}
+
+.intersection-ignore
+{
+	background-color:orange;
+	color: brown;
+}
+
+.intersection-valid
+{
+	background-color:green;
+	color: greenyellow;
+}
+
+.intersection-none
+{
+	background-color:red;
+	color:white;
+}
