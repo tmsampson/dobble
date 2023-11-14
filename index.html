@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Dibble</title>
+	<!-- UIkit -->
+	<script src="js/uikit.min.js"></script>
+	<script src="js/uikit-icons.min.js"></script>
+	<link rel="stylesheet" href="css/uikit.min.css" />
+	<!-- Dibble -->
+	<script src="js/dibble.js"></script>
+	<link rel="stylesheet" href="css/dibble.css">
+</head>
+
+<body>
+	<h1>Dibble</h1>
+
+	<form class="uk-form-horizontal" onsubmit="event.preventDefault();">
+
+		<div class="uk-margin">
+			<label class="uk-form-label" for="num-slots">Slots</label>
+			<div class="uk-form-controls">
+				<input class="uk-input" id="num-slots" type="number" value="3" min="1">
+			</div>
+		</div>
+
+		<div class="uk-margin">
+			<label class="uk-form-label" for="num-variants">Variants</label>
+			<div class="uk-form-controls">
+				<input class="uk-input" id="num-variants" type="number" value="3" min="1">
+			</div>
+		</div>
+
+		<div class="uk-margin">
+			<label class="uk-form-label" for="num-permutations">Permutations</label>
+			<div class="uk-form-controls">
+				<input class="uk-input" id="num-permutations" type="number" value="" disabled>
+			</div>
+		</div>
+
+		<button class="uk-button uk-button-default" onclick="dibble()">Click</button>
+
+	</form>
+
+	<br/>
+	<div class="uk-section uk-section-muted">
+		<div class="uk-container">
+	
+			<h3>Results</h3>
+	
+			<div id="results">
+			</div>
+	
+		</div>
+	</div>
+</body>
+
+</html>
