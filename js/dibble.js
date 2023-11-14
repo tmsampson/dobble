@@ -1,3 +1,5 @@
+const alphabet = [ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" ];
+
 function dibble()
 {
 	// Clear previous results
@@ -14,11 +16,14 @@ function dibble()
 		return false;
 	}
 
-	// Setup slots
-	let slots = [];
+	// Setup results
+	let results = [];
+
+	// Setup permutation
+	let permutation = [];
 	for(let i = 0; i < numSlots; ++i)
 	{
-		slots.push(0);
+		permutation.push(0);
 	}
 
 	// Calculate permutations
@@ -27,28 +32,34 @@ function dibble()
 	{
 		for(let variant = 0; variant < numVariants; ++variant)
 		{
-			slots[numSlots - 1] = variant;
-
-			// print
-			slots.forEach(function(entry) { addResult(entry); }); addResult("<br/>");
+			permutation[numSlots - 1] = variant;
+			results.push(permutation.slice());
 		}
 
 		running = false;
 		for(let i = 1; i < numSlots; ++i)
 		{
-			if(slots[numSlots - 1 - i] < (numVariants - 1))
+			let nextSlotIndex = numSlots - i - 1;
+			if(permutation[nextSlotIndex] < (numVariants - 1))
 			{
-				slots[numSlots - 1 - i]++;
+				permutation[nextSlotIndex]++;
 
 				for(let j = numSlots - i; j < numSlots; ++j)
 				{
-					slots[j] = 0;
+					permutation[j] = 0;
 				}
 				running = true;
 				break;
 			}
 		}
 	}
+
+	// Print results
+	results.forEach(function(permutation)
+	{
+		permutation.forEach(function(entry) { addResult(alphabet[entry]); });
+		addResult("<br/>");
+	});
 }
 
 function onInputsChanged()
