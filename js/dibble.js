@@ -30,9 +30,11 @@ function dibble()
 	let running = true;
 	while(running)
 	{
+		// TODO: Fix this edge case for final slot of permutation
 		for(let variant = 0; variant < numVariants; ++variant)
 		{
 			permutation[numSlots - 1] = variant;
+			// TODO: Remove duplicates
 			results.push(permutation.slice());
 		}
 
