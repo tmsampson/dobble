@@ -86,7 +86,6 @@ function dibble()
 	}
 	let combinationsOutputFooter = document.getElementById("combinations-output-footer");
 	combinationsOutputFooter.innerHTML = "ℹ The number of unique card combinations can be calculaed as: <b>NumVariants! / (NumVariants - NumSlots)! * NumSlots!</b>";
-	return;
 
 	// Print intersections
 	let intersectionsTable = document.getElementById("intersections-output-table");
