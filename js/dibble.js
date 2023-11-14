@@ -16,39 +16,53 @@ function dibble()
 		return false;
 	}
 
-	// Setup results
-	let results = [];
-
-	// Setup permutation
-	let permutation = [];
+	// Setup permutations
+	let permutations = [];
+	let currentPermutation = [];
 	for(let i = 0; i < numSlots; ++i)
 	{
-		permutation.push(0);
+		currentPermutation.push(0);
 	}
 
 	// Calculate permutations
 	let running = true;
 	while(running)
 	{
-		// TODO: Fix this edge case for final slot of permutation
+		// Try the last slot index with each variant
 		for(let variant = 0; variant < numVariants; ++variant)
 		{
-			permutation[numSlots - 1] = variant;
-			// TODO: Remove duplicates
-			results.push(permutation.slice());
+			currentPermutation[numSlots - 1] = variant;
+
+			// Skip if this permutations contains the same value in multiple slots
+			const hasDuplicateSlots = (currentPermutation.length !== new Set(currentPermutation).size);
+			if(hasDuplicateSlots)
+			{
+				continue;
+			}
+
+			// Convert to alphabet (1,2,3 => A,B,C), and conver to sorted string
+			let permutationAlphabetic = currentPermutation.map((slotValue) => alphabet[slotValue]);
+			let permutationString = permutationAlphabetic.sort().join();
+
+			// Skip if this permutation has already been stored
+			if(permutations.includes(permutationString))
+			{
+				continue;
+			}
+
+			// Store valid permutation
+			permutations.push(permutationString);
 		}
 
 		running = false;
-		for(let i = 1; i < numSlots; ++i)
+		for(let nextSlotIndex = numSlots - 1; nextSlotIndex >= 0; --nextSlotIndex)
 		{
-			let nextSlotIndex = numSlots - i - 1;
-			if(permutation[nextSlotIndex] < (numVariants - 1))
+			if(currentPermutation[nextSlotIndex] < (numVariants - 1))
 			{
-				permutation[nextSlotIndex]++;
-
-				for(let j = numSlots - i; j < numSlots; ++j)
+				currentPermutation[nextSlotIndex]++;
+				for(let previousSlotIndex = nextSlotIndex + 1; previousSlotIndex < numSlots; ++previousSlotIndex)
 				{
-					permutation[j] = 0;
+					currentPermutation[previousSlotIndex] = 0;
 				}
 				running = true;
 				break;
@@ -57,9 +71,9 @@ function dibble()
 	}
 
 	// Print results
-	results.forEach(function(permutation)
+	permutations.forEach(function(permutation)
 	{
-		permutation.forEach(function(entry) { addResult(alphabet[entry]); });
+		addResult(permutation);
 		addResult("<br/>");
 	});
 }
