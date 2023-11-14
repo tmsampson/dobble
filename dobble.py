@@ -1,3 +1,4 @@
+# // https://math.stackexchange.com/questions/36798/what-is-the-math-behind-the-game-spot-it
 def dobble(p):
     cards = [[] for i in range(p**2 + p + 1)]
     cards[0].append(0)
@@ -11,5 +12,5 @@ def dobble(p):
                 cards[1 + p + i*p + k].append(1 + p + j*p + (i*j - k) % p)
     return cards
 
-result = dobble(2)
+result = dobble(7)
 print(result)
