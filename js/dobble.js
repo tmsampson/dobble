@@ -150,40 +150,40 @@ function pyMod(n, m)
 
 function dobble2()
 {
-let p = 7;
+	// Setup inputs
+	let p = 7;
+	let numCards = (p * p) + p + 1;
 
-let cards = Array.from({ length: p ** 2 + p + 1 }, () => []);
+	// Setup cards
+	let cards = [];
+	for(let i = 0; i < numCards; ++i)
+	{
+		cards.push([]);
+	}
 
-    cards[0].push(0);
+	// Populate cards
+	cards[0].push(0);
+	for (let i = 0; i <= p; i++)
+	{
+		for (let j = 0; j < p; j++)
+		{
+			cards[1 + i * p + j].push(i);
+			cards[i].push(1 + i * p + j);
+		}
+	}
 
-    for (let i = 0; i <= p; i++) {
-        for (let j = 0; j < p; j++) {
-			if((1 + i * p + j) == 9)
+	for (let i = 0; i < p; i++)
+	{
+		for (let j = 0; j < p; j++)
+		{
+			for (let k = 0; k < p; k++)
 			{
-				//alert("here");
+				cards[1 + p + i * p + k].push(1 + p + j*p + pyMod(i*j - k, p));
 			}
-            cards[1 + i * p + j].push(i);
-			if(i == 9)
-			{
-				//alert("here");
-			}
-            cards[i].push(1 + i * p + j);
-        }
-    }
+		}
+	}
 
-    for (let i = 0; i < p; i++) {
-        for (let j = 0; j < p; j++) {
-            for (let k = 0; k < p; k++) {
-				if((1 + p + i * p + k) == 9)
-				{
-					//alert("here");
-				}
-                cards[1 + p + i * p + k].push(1 + p + j*p + pyMod(i*j - k, p));
-            }
-        }
-    }
-
-	// Output
+	// Raw output
 	let output = "";
 	for(let i = 0; i < cards.length; ++i)
 	{
