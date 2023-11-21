@@ -197,6 +197,10 @@ let cards = Array.from({ length: p ** 2 + p + 1 }, () => []);
 			}
 		}
 		output += "]";
+		if(i < cards.length - 1)
+		{
+			output += "\n";
+		}
 	}
 	document.getElementById("d2output").value = output;
 }
