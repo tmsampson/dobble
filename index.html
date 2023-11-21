@@ -64,8 +64,44 @@
 		<li class="uk-active">
 			<!-- V2 -->
 			<h3>Input</h3>
-			<button class="uk-button uk-button-default" onclick="dobble2()">Generate</button>
+			<input type="file" id="fileinput" multiple class="uk-button uk-button-default"/>
+			<script type="text/javascript">
+			function readMultipleFiles(evt)
+			{
+				// Retrieve all the files from the FileList object
+				var files = evt.target.files; 
+				alert(files.length)
+				if (files)
+				{
+					for (var i=0, f; f=files[i]; i++)
+					{
+						var r = new FileReader();
+						r.onload = (function(f)
+						{
+							return function(e)
+							{
+								var contents = e.target.result;
+								alert( "Got the file.n" 
+											+"name: " + f.name + "n"
+											+"type: " + f.type + "n"
+											+"size: " + f.size + " bytesn"
+											+ "starts with: " + contents.substr(1, contents.indexOf("n"))
+								); 
+							};
+						})(f);
+						r.readAsText(f);
+					}
+				}
+				else
+				{
+					alert("Failed to load files");
+				}
+			}
+			document.getElementById('fileinput').addEventListener('change', readMultipleFiles, false);
+			</script>
 			<br/><br/>
+			<button class="uk-button uk-button-default" onclick="dobble2()">Generate</button>
+			<br/>
 			<h3>Raw Output</h3>
 			<textarea class="uk-input" id="d2output" type="text" style="height:300px; line-height: 100%; font-family: Consolas;"></textarea>
 

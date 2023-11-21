@@ -31,3 +31,8 @@ td:first-child
 	background-color:red;
 	color:white;
 }
+
+button
+{
+	background-color:red !important;
+}
