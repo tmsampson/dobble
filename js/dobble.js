@@ -1,7 +1,14 @@
 // https://math.stackexchange.com/questions/36798/what-is-the-math-behind-the-game-spot-it
 const alphabet = [ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" ];
 
-function dibble()
+function tryIt(ipc, il)
+{
+	document.getElementById("num-slots").value = ipc;
+	document.getElementById("num-variants").value = il;
+	dobble();
+}
+
+function dobble()
 {
 	// Grab values
 	const numSlots = parseInt(document.getElementById("num-slots").value);
@@ -136,13 +143,60 @@ function dibble()
 	intersectionsTable.innerHTML = tableHtml;
 }
 
-function onInputsChanged()
+function pyMod(n, m)
 {
-	
+	return (n < 0)? m + n : (((n % m) + m) % m);
 }
 
-// Perform initial update
-document.addEventListener("DOMContentLoaded", function()
+function dobble2()
 {
-	onInputsChanged();
-});
+let p = 7;
+
+let cards = Array.from({ length: p ** 2 + p + 1 }, () => []);
+
+    cards[0].push(0);
+
+    for (let i = 0; i <= p; i++) {
+        for (let j = 0; j < p; j++) {
+			if((1 + i * p + j) == 9)
+			{
+				//alert("here");
+			}
+            cards[1 + i * p + j].push(i);
+			if(i == 9)
+			{
+				//alert("here");
+			}
+            cards[i].push(1 + i * p + j);
+        }
+    }
+
+    for (let i = 0; i < p; i++) {
+        for (let j = 0; j < p; j++) {
+            for (let k = 0; k < p; k++) {
+				if((1 + p + i * p + k) == 9)
+				{
+					//alert("here");
+				}
+                cards[1 + p + i * p + k].push(1 + p + j*p + pyMod(i*j - k, p));
+            }
+        }
+    }
+
+	// Output
+	let output = "";
+	for(let i = 0; i < cards.length; ++i)
+	{
+		output += "[";
+		for(let j = 0; j <= p; ++j)
+		{
+			output += cards[i][j];
+			if(j < p)
+			{
+				output += ", ";
+			}
+		}
+		output += "]";
+	}
+	document.getElementById("d2output").value = output;
+}

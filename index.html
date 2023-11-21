@@ -4,54 +4,72 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Dibble</title>
+	<title>dobble</title>
 	<!-- UIkit -->
 	<script src="js/uikit.min.js"></script>
 	<script src="js/uikit-icons.min.js"></script>
 	<link rel="stylesheet" href="css/uikit.min.css" />
-	<!-- Dibble -->
-	<script src="js/dibble.js"></script>
-	<link rel="stylesheet" href="css/dibble.css">
+	<!-- dobble -->
+	<script src="js/dobble.js"></script>
+	<link rel="stylesheet" href="css/dobble.css">
 </head>
 
 <body>
-	<h1>Dibble</h1>
+	<h1>Dobble</h1>
 
-	<h3>Configuration</h3>
-	<form class="uk-form-horizontal" onsubmit="event.preventDefault();">
+	<ul class="uk-tab" data-uk-tab="{connect:'#my-id'}">
+		<li><a href="">V1</a></li>
+		<li><a href="">V2</a></li>
+	</ul>
+	<ul id="my-id" class="uk-switcher uk-margin">
+		<li>
+			<!-- V1 -->
+			<h3>Overview</h3>
+			My first stab at the problem going in blind. Using the inputs provided, a list of <u>all possible unique cards</u> is generated and an intersection matrix is produced. Each cell in the intersection matrix displays the number of common images between each card. For certain inputs this will generate a valid game of Dobble, but for many others it fails to satisfy the <i>"only one image in common"</i> constraint employed by the real game.
+			<br/><br/>For example:
+			<ul>
+				<li>IPC = 2, IL = 3 --> <b style="color:green">VALID</b> <a href="javascript:tryIt(2, 3)" style="margin-left:10px">Try it</a></li>
+				<li>IPC = 2, IL = 5 --> <b style="color:red">INVALID</b> (some cards have no images in common) <a href="javascript:tryIt(2, 5)" style="margin-left:10px">Try it</a></li>
+				<li>IPC = 3, IL = 5 --> <b style="color:red">INVALID</b> (some cards have more than one image in common) <a href="javascript:tryIt(3, 5)" style="margin-left:10px">Try it</a></li>
+			</ul>
+			<h3>Input</h3>
+			<form class="uk-form-horizontal" onsubmit="event.preventDefault();">
 
-		<div class="uk-margin">
-			<label class="uk-form-label" for="num-slots">Slot Count</label>
-			<div class="uk-form-controls">
-				<input class="uk-input" id="num-slots" type="number" value="3" min="1">
-			</div>
-		</div>
+				<div class="uk-margin">
+					<label class="uk-form-label" for="num-slots">Images Per Card (IPC) </label>
+					<div class="uk-form-controls">
+						<input class="uk-input" id="num-slots" type="number" value="3" min="1" uk-tooltip="title: Number of unique images per card; pos: top-left">
+					</div>
+				</div>
 
-		<div class="uk-margin">
-			<label class="uk-form-label" for="num-variants">Variant Count</label>
-			<div class="uk-form-controls">
-				<input class="uk-input" id="num-variants" type="number" value="6" min="1" max="26">
-			</div>
-		</div>
+				<div class="uk-margin">
+					<label class="uk-form-label" for="num-variants">Image Library (IL)</label>
+					<div class="uk-form-controls">
+						<input class="uk-input" id="num-variants" type="number" value="6" min="1" max="26" uk-tooltip="title: Total number of unique images available; pos: top-left">
+					</div>
+				</div>
 
-		<div class="uk-margin">
-			<label class="uk-form-label" for="num-variants">Minimum Player Count</label>
-			<div class="uk-form-controls">
-				<input class="uk-input" id="num-variants" type="number" value="2" min="1" max="32">
-			</div>
-		</div>
+				<button class="uk-button uk-button-default" onclick="dobble()">Generate</button>
 
-		<button class="uk-button uk-button-default" onclick="dibble()">Generate</button>
+			</form>
 
-	</form>
+			<h3>Combinations</h3>
+			<div id="combinations-output-text" style="margin-bottom:20px"></div>
+			<div id="combinations-output-list" style="margin-bottom:20px; font-family: Consolas"></div>
+			<div id="combinations-output-footer"></div>
 
-	<h3>Combinations</h3>
-	<div id="combinations-output-text" style="margin-bottom:20px"></div>
-	<div id="combinations-output-list" style="margin-bottom:20px; font-family: Consolas"></div>
-	<div id="combinations-output-footer"></div>
+			<h3>Intersections</h3>
+			<table id="intersections-output-table" style="margin-bottom:20px"></table>
+		</li>
+		<li class="uk-active">
+			<!-- V2 -->
+			<button class="uk-button uk-button-default" onclick="dobble2()">Generate</button>
+			<input class="uk-input" id="d2output" type="text">
 
-	<h3>Intersections</h3>
-	<table id="intersections-output-table" style="margin-bottom:20px"></table>
+		</li>
+	</ul>
+
+	
 
 </body>
 
