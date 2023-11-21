@@ -163,22 +163,25 @@ function dobble2()
 
 	// Populate cards
 	cards[0].push(0);
-	for (let i = 0; i <= p; i++)
+	for (let i = 0; i <= p; ++i)
 	{
-		for (let j = 0; j < p; j++)
+		for (let j = 0; j < p; ++j)
 		{
-			cards[1 + i * p + j].push(i);
-			cards[i].push(1 + i * p + j);
+			let index = 1 + i * p + j;
+			cards[index].push(i);
+			cards[i].push(index);
 		}
 	}
 
-	for (let i = 0; i < p; i++)
+	for (let i = 0; i < p; ++i)
 	{
-		for (let j = 0; j < p; j++)
+		for (let j = 0; j < p; ++j)
 		{
-			for (let k = 0; k < p; k++)
+			for (let k = 0; k < p; ++k)
 			{
-				cards[1 + p + i * p + k].push(1 + p + j*p + pyMod(i*j - k, p));
+				let index = 1 + p + i * p + k;
+				let value = 1 + p + j * p + pyMod(i * j - k, p);
+				cards[index].push(value);
 			}
 		}
 	}
