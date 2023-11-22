@@ -148,7 +148,7 @@ function pyMod(n, m)
 	return (n < 0)? m + n : (((n % m) + m) % m);
 }
 
-function dobble2()
+function dobble2(evt)
 {
 	// Setup inputs
 	let p = 7;
@@ -206,6 +206,36 @@ function dobble2()
 		}
 	}
 	document.getElementById("d2output").value = output;
+
+	// Clear previous output
+	const imageContainer = document.getElementById("image-container");
+	imageContainer.innerHTML = "";
+
+	// Image loading
+	var files = evt.target.files;
+	if(files)
+	{
+		for(let i = 0; i < files.length; ++i)
+		{
+			var file = files[i];
+			if(file)
+			{
+				var reader = new FileReader();
+				reader.onload = function (e)
+				{
+					let img = document.createElement("img");
+					img.src = e.target.result;
+					img.className = "image-preview";
+					imageContainer.appendChild(img);
+				}
+				reader.readAsDataURL(file);
+			}
+		}
+	}
+	else
+	{
+		alert("Failed to load files");
+	}
 }
 
 function printDiv(id)

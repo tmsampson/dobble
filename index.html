@@ -66,38 +66,9 @@
 			<h3>Input</h3>
 			<input type="file" id="fileinput" multiple class="uk-button uk-button-default"/>
 			<script type="text/javascript">
-			function readMultipleFiles(evt)
-			{
-				// Retrieve all the files from the FileList object
-				var files = evt.target.files;
-				if(files)
-				{
-					for(let i = 0; i < files.length; ++i)
-					{
-						var file = files[i];
-						if(file)
-						{
-							var reader = new FileReader();
-							reader.onload = function (e)
-							{
-								let img = document.createElement("img");
-								img.src = e.target.result;
-								img.className = "image-preview";
-								document.getElementById("image-container").appendChild(img);
-							}
-							reader.readAsDataURL(file);
-						}
-					}
-				}
-				else
-				{
-					alert("Failed to load files");
-				}
-			}
-			document.getElementById('fileinput').addEventListener('change', readMultipleFiles, false);
+			document.getElementById('fileinput').addEventListener('change', dobble2, false);
 			</script>
 			<br/><br/>
-			<button class="uk-button uk-button-default" onclick="dobble2()">Generate</button>
 			<br/>
 			<h3>Images</h3>
 			<div id="image-container">
