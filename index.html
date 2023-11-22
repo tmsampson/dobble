@@ -69,27 +69,24 @@
 			function readMultipleFiles(evt)
 			{
 				// Retrieve all the files from the FileList object
-				var files = evt.target.files; 
-				alert(files.length)
-				if (files)
+				var files = evt.target.files;
+				if(files)
 				{
-					for (var i=0, f; f=files[i]; i++)
+					for(let i = 0; i < files.length; ++i)
 					{
-						var r = new FileReader();
-						r.onload = (function(f)
+						var file = files[i];
+						if(file)
 						{
-							return function(e)
+							var reader = new FileReader();
+							reader.onload = function (e)
 							{
-								var contents = e.target.result;
-								alert( "Got the file.n" 
-											+"name: " + f.name + "n"
-											+"type: " + f.type + "n"
-											+"size: " + f.size + " bytesn"
-											+ "starts with: " + contents.substr(1, contents.indexOf("n"))
-								); 
-							};
-						})(f);
-						r.readAsText(f);
+								let img = document.createElement("img");
+								img.src = e.target.result;
+								img.className = "image-preview";
+								document.getElementById("image-container").appendChild(img);
+							}
+							reader.readAsDataURL(file);
+						}
 					}
 				}
 				else
@@ -102,6 +99,11 @@
 			<br/><br/>
 			<button class="uk-button uk-button-default" onclick="dobble2()">Generate</button>
 			<br/>
+			<h3>Images</h3>
+			<div id="image-container">
+			</div>
+			<br/><br/>
+			<button class="uk-button uk-button-default" onclick="printDiv('image-container')">Print Images</button>
 			<h3>Raw Output</h3>
 			<textarea class="uk-input" id="d2output" type="text" style="height:300px; line-height: 100%; font-family: Consolas;"></textarea>
 

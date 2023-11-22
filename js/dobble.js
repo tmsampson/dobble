@@ -207,3 +207,14 @@ function dobble2()
 	}
 	document.getElementById("d2output").value = output;
 }
+
+function printDiv(id)
+{
+	var divContents = document.getElementById(id).innerHTML;
+	var a = window.open('', '', 'height=500, width=500');
+	a.document.write('<html><body>');
+	a.document.write(divContents);
+	a.document.write('</body></html>');
+	a.document.close();
+	a.print();
+} 
