@@ -1,5 +1,6 @@
 // https://math.stackexchange.com/questions/36798/what-is-the-math-behind-the-game-spot-it
 const alphabet = [ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" ];
+const imagePositions = [ [1.0000, 0.0000], [0.6235, 0.7818], [-0.2225, 0.9749], [-0.9010, 0.4339], [-0.9010, -0.4339], [-0.2225, -0.9749], [0.6235, -0.7818] ];
 
 function tryIt(ipc, il)
 {
@@ -148,7 +149,7 @@ function pyMod(n, m)
 	return (n < 0)? m + n : (((n % m) + m) % m);
 }
 
-function dobble2(evt)
+async function dobble2(event)
 {
 	// Setup inputs
 	let p = 7;
@@ -209,42 +210,88 @@ function dobble2(evt)
 
 	// Clear previous output
 	const imageContainer = document.getElementById("image-container");
+	const cardContainer = document.getElementById("card-container");
 	imageContainer.innerHTML = "";
+	cardContainer.innerHTML = "";
 
-	// Image loading
-	var files = evt.target.files;
-	if(files)
+	// Load files
+	let files = [...event.target.files];
+	let loadedFiles = await Promise.all(files.map(f => { return loadFile(f); }));
+
+	// Generate preview images
+	for(let i = 0; i < loadedFiles.length; ++i)
 	{
-		for(let i = 0; i < files.length; ++i)
+		let file = loadedFiles[i];
+		let img = document.createElement("img");
+		img.src = file.data;
+		img.className = "image-preview";
+		imageContainer.appendChild(img);
+	}
+
+	// Generate cards
+	const cardSize = 200;
+	const imageSize = cardSize * 0.2;
+	const cardHalfSize = cardSize * 0.5;
+	const imageRadius = cardSize * 0.3;
+
+	// Function for adding images to card
+	const addImage = function(container, x, y, w, h, src)
+	{
+		const halfWidth = w * 0.5;
+		const halfHeight = h * 0.5;
+		let img = document.createElement("img");
+		img.className = "cardImage";
+		img.src = src;
+		img.style.minWidth = w + "px";
+		img.style.minHeight = h + "px";
+		img.style.left = (x - halfWidth) + "px";
+		img.style.top = (y - halfHeight) + "px";
+		container.appendChild(img);
+	};
+
+	for(let i = 0; i < cards.length; ++i)
+	{
+		const card = cards[i];
+
+		// Card background
+		let cardBackground = document.createElement("div");
+		cardBackground.className = "card";
+		cardBackground.style.minWidth = cardSize + "px";
+		cardBackground.style.maxWidth = cardSize + "px";
+		cardBackground.style.minHeight += cardSize + "px";
+		cardBackground.style.maxHeight += cardSize + "px";
+		cardContainer.appendChild(cardBackground);
+
+		// Card images
+		addImage(cardBackground, cardHalfSize, cardHalfSize, imageSize, imageSize, loadedFiles[card[0]].data);
+		for(let j = 0; j < 7; ++j)
 		{
-			var file = files[i];
-			if(file)
-			{
-				var reader = new FileReader();
-				reader.onload = function (e)
-				{
-					let img = document.createElement("img");
-					img.src = e.target.result;
-					img.className = "image-preview";
-					imageContainer.appendChild(img);
-				}
-				reader.readAsDataURL(file);
-			}
+			const x = cardHalfSize + (imagePositions[j][0] * imageRadius);
+			const y = cardHalfSize + (imagePositions[j][1] * imageRadius);
+			addImage(cardBackground, x, y, imageSize, imageSize, loadedFiles[card[j + 1]].data);
 		}
 	}
-	else
-	{
-		alert("Failed to load files");
-	}
 }
+
+function loadFile(file)
+{
+	return new Promise((resolve, reject) =>
+	{
+		let fileReader = new FileReader();
+		fileReader.onload = function()
+		{
+			return resolve({ data:fileReader.result, name:file.name, size: file.size, type: file.type });
+		}
+		fileReader.readAsDataURL(file);
+	});
+} 
 
 function printDiv(id)
 {
 	var divContents = document.getElementById(id).innerHTML;
-	var a = window.open('', '', 'height=500, width=500');
-	a.document.write('<html><body>');
+	var a = window.open('', '', '');
+	a.document.write("<html><link rel='stylesheet' href='css/dobble.css'><body>");
 	a.document.write(divContents);
 	a.document.write('</body></html>');
 	a.document.close();
-	a.print();
 } 
