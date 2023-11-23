@@ -149,6 +149,41 @@ function pyMod(n, m)
 	return (n < 0)? m + n : (((n % m) + m) % m);
 }
 
+function loadImage(file)
+{
+	return new Promise((resolve, reject) =>
+	{
+		let fileReader = new FileReader();
+		fileReader.onload = function()
+		{
+			return resolve({ data:fileReader.result, name:file.name, size: file.size, type: file.type });
+		}
+		fileReader.readAsDataURL(file);
+	});
+} 
+
+let loadedImages = [];
+async function uploadImages(event)
+{
+	// Clear previous output
+	const imageContainer = document.getElementById("image-preview-container");
+	imageContainer.innerHTML = "";
+
+	// Load images
+	let files = [...event.target.files];
+	loadedImages = await Promise.all(files.map(f => { return loadImage(f); }));
+
+	// Generate preview images
+	for(let i = 0; i < loadedImages.length; ++i)
+	{
+		let file = loadedImages[i];
+		let img = document.createElement("img");
+		img.src = file.data;
+		img.className = "image-preview";
+		imageContainer.appendChild(img);
+	}
+}
+
 async function dobble2(event)
 {
 	// Setup inputs
@@ -209,30 +244,15 @@ async function dobble2(event)
 	document.getElementById("d2output").value = output;
 
 	// Clear previous output
-	const imageContainer = document.getElementById("image-container");
 	const cardContainer = document.getElementById("card-container");
-	imageContainer.innerHTML = "";
 	cardContainer.innerHTML = "";
 
-	// Load files
-	let files = [...event.target.files];
-	let loadedFiles = await Promise.all(files.map(f => { return loadFile(f); }));
-
-	// Generate preview images
-	for(let i = 0; i < loadedFiles.length; ++i)
-	{
-		let file = loadedFiles[i];
-		let img = document.createElement("img");
-		img.src = file.data;
-		img.className = "image-preview";
-		imageContainer.appendChild(img);
-	}
-
 	// Generate cards
-	const cardSize = 200;
-	const imageSize = cardSize * 0.2;
-	const cardHalfSize = cardSize * 0.5;
-	const imageRadius = cardSize * 0.3;
+	const cardDiameter = parseInt(document.getElementById("card-diameter").value);
+	const cardSpacing = parseInt(document.getElementById("card-spacing").value);
+	const imageSize = cardDiameter * 0.2;
+	const cardHalfSize = cardDiameter * 0.5;
+	const imageRadius = cardDiameter * 0.3;
 
 	// Function for adding images to card
 	const addImage = function(container, x, y, w, h, src)
@@ -256,35 +276,23 @@ async function dobble2(event)
 		// Card background
 		let cardBackground = document.createElement("div");
 		cardBackground.className = "card";
-		cardBackground.style.minWidth = cardSize + "px";
-		cardBackground.style.maxWidth = cardSize + "px";
-		cardBackground.style.minHeight += cardSize + "px";
-		cardBackground.style.maxHeight += cardSize + "px";
+		cardBackground.style.minWidth = cardDiameter + "px";
+		cardBackground.style.maxWidth = cardDiameter + "px";
+		cardBackground.style.minHeight += cardDiameter + "px";
+		cardBackground.style.maxHeight += cardDiameter + "px";
+		cardBackground.style.margin = cardSpacing + "px";
 		cardContainer.appendChild(cardBackground);
 
 		// Card images
-		addImage(cardBackground, cardHalfSize, cardHalfSize, imageSize, imageSize, loadedFiles[card[0]].data);
+		addImage(cardBackground, cardHalfSize, cardHalfSize, imageSize, imageSize, loadedImages[card[0]].data);
 		for(let j = 0; j < 7; ++j)
 		{
 			const x = cardHalfSize + (imagePositions[j][0] * imageRadius);
 			const y = cardHalfSize + (imagePositions[j][1] * imageRadius);
-			addImage(cardBackground, x, y, imageSize, imageSize, loadedFiles[card[j + 1]].data);
+			addImage(cardBackground, x, y, imageSize, imageSize, loadedImages[card[j + 1]].data);
 		}
 	}
 }
-
-function loadFile(file)
-{
-	return new Promise((resolve, reject) =>
-	{
-		let fileReader = new FileReader();
-		fileReader.onload = function()
-		{
-			return resolve({ data:fileReader.result, name:file.name, size: file.size, type: file.type });
-		}
-		fileReader.readAsDataURL(file);
-	});
-} 
 
 function printDiv(id)
 {

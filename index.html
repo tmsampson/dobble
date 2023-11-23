@@ -32,7 +32,7 @@
 				<li>IPC = 2, IL = 5 --> <b style="color:red">INVALID</b> (some cards have no images in common) <a href="javascript:tryIt(2, 5)" style="margin-left:10px">Try it</a></li>
 				<li>IPC = 3, IL = 5 --> <b style="color:red">INVALID</b> (some cards have more than one image in common) <a href="javascript:tryIt(3, 5)" style="margin-left:10px">Try it</a></li>
 			</ul>
-			<h3>Input</h3>
+			<h3>Configuration</h3>
 			<form class="uk-form-horizontal" onsubmit="event.preventDefault();">
 
 				<div class="uk-margin">
@@ -64,16 +64,34 @@
 		<li class="uk-active">
 			<!-- V2 -->
 			<h3>Overview</h3>
-			<h3>Input</h3>
+			<h3>Images</h3>
+			Please choose 57 unique (and ideally square) images below:
+			<br/><br/>
 			<input type="file" id="fileinput" multiple class="uk-button uk-button-default"/>
 			<script type="text/javascript">
-			document.getElementById('fileinput').addEventListener('change', dobble2, false);
+			document.getElementById('fileinput').addEventListener('change', uploadImages, false);
 			</script>
-			<br/><br/>
-			<h3>Images</h3>
-			<div id="image-container">
-			</div>
-			<br/>
+			<div id="image-preview-container"></div>
+			<h3>Configuration</h3>
+			<form class="uk-form-horizontal" onsubmit="event.preventDefault();">
+
+				<div class="uk-margin">
+					<label class="uk-form-label" for="card-diameter">Card Diameter</label>
+					<div class="uk-form-controls">
+						<input class="uk-input" id="card-diameter" type="number" value="200" min="1" uk-tooltip="title: Cards diameter (in pixels); pos: top-left">
+					</div>
+				</div>
+
+				<div class="uk-margin">
+					<label class="uk-form-label" for="card-spacing">Card Spacing</label>
+					<div class="uk-form-controls">
+						<input class="uk-input" id="card-spacing" type="number" value="10" min="1" uk-tooltip="title: Spacing between cards (in pixels); pos: top-left">
+					</div>
+				</div>
+
+				<button class="uk-button uk-button-default" onclick="dobble2()">Generate</button>
+
+			</form>
 			<h3>Cards</h3>
 			<div id="card-container">
 			</div>
