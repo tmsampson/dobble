@@ -222,6 +222,15 @@ async function dobble2(event)
 		}
 	}
 
+	// Shuffle cards
+	let shuffleSeed = parseInt(document.getElementById("shuffle-seed").value);
+	for(let i = 0; i < cards.length; ++i)
+	{
+		let card = cards[i];
+		shuffle(card, shuffleSeed);
+		++shuffleSeed;
+	}
+
 	// Raw output
 	let output = "";
 	for(let i = 0; i < cards.length; ++i)
@@ -305,3 +314,28 @@ function printDiv(id)
 	a.document.write('</body></html>');
 	a.document.close();
 } 
+
+function shuffle(array, seed)
+{
+	var m = array.length, t, i;
+
+	// While there remain elements to shuffle…
+	while (m)
+	{
+		// Pick a remaining element…
+		i = Math.floor(random(seed) * m--);
+
+		// And swap it with the current element.
+		t = array[m];
+		array[m] = array[i];
+		array[i] = t;
+		++seed;
+	}
+	return array;
+}
+
+function random(seed)
+{
+	var x = Math.sin(seed++) * 10000;
+	return x - Math.floor(x);
+}
