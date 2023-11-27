@@ -262,8 +262,10 @@ async function dobble2(event)
 		let img = document.createElement("img");
 		img.className = "cardImage";
 		img.src = src;
+		img.style.width = w + "px";
 		img.style.minWidth = w + "px";
 		img.style.minHeight = h + "px";
+		img.style.height = h + "px";
 		img.style.left = (x - halfWidth) + "px";
 		img.style.top = (y - halfHeight) + "px";
 		container.appendChild(img);
