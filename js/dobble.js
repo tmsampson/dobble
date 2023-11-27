@@ -224,6 +224,9 @@ async function dobble2(event)
 
 	// Shuffle cards
 	let shuffleSeed = parseInt(document.getElementById("shuffle-seed").value);
+	shuffle(cards, shuffleSeed);
+
+	// Shuffle card images
 	for(let i = 0; i < cards.length; ++i)
 	{
 		let card = cards[i];
@@ -259,7 +262,8 @@ async function dobble2(event)
 	// Generate cards
 	const cardDiameter = parseInt(document.getElementById("card-diameter").value);
 	const cardSpacing = parseInt(document.getElementById("card-spacing").value);
-	const imageSize = cardDiameter * 0.2;
+	const imageScale = parseFloat(document.getElementById("image-scale").value);
+	const imageSize = cardDiameter * imageScale;
 	const cardHalfSize = cardDiameter * 0.5;
 	const imageRadius = cardDiameter * 0.3;
 

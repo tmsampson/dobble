@@ -51,7 +51,7 @@ button
 
 .card
 {
-	background-image: url("../images/card.svg");
+	background-image: url("../images/card.png");
 	background-size: contain;
 	display:block;
 	position:relative;
@@ -64,4 +64,6 @@ button
 {
 	display:block;
 	position:absolute;
+	-webkit-filter: drop-shadow(5px 5px 5px #222);
+	filter: drop-shadow(5px 5px 5px #222);
 }
