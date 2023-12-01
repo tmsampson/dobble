@@ -9,6 +9,23 @@ function tryIt(ipc, il)
 	dobble();
 }
 
+function GetPrintCardsPerRow()
+{
+	return parseInt(document.getElementById("print-cards-per-row").value);
+}
+
+function GetPrintRowsPerPage()
+{
+	return parseInt(document.getElementById("print-rows-per-page").value);
+}
+
+function GetPrintCardsPerPage()
+{
+	const printCardsPerRow = GetPrintCardsPerRow();
+	const printRowsPerPage = GetPrintRowsPerPage();
+	return printCardsPerRow * printRowsPerPage;
+}
+
 function dobble()
 {
 	// Grab values
@@ -184,9 +201,6 @@ async function uploadImages(event)
 	}
 }
 
-const printCardCols = 2;
-const printCardRows = 3;
-const printCardsPerPage = printCardCols * printCardRows;
 let cardDivs = [];
 
 async function dobble2(event)
@@ -318,6 +332,7 @@ async function dobble2(event)
 	}
 
 	// Printing
+	const printCardsPerPage = GetPrintCardsPerPage();
 	const printButtonContainer = document.getElementById("print-button-container");
 	const printPageCount = Math.ceil(cardDivs.length / printCardsPerPage);
 	let printButtonHtml = "";
@@ -330,6 +345,9 @@ async function dobble2(event)
 
 function printPage(pageIndex)
 {
+	const printCardCols = GetPrintCardsPerRow();
+	const printCardsPerPage = GetPrintCardsPerPage();
+
 	const firstCardIndex = pageIndex * printCardsPerPage;
 	const lastCardIndex = Math.min(firstCardIndex + printCardsPerPage, cardDivs.length);
 	let divContents = "";

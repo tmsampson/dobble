@@ -38,6 +38,8 @@
 			<h3>Configuration</h3>
 			<form class="uk-form-horizontal" onsubmit="event.preventDefault();">
 
+				<h5>General</h5>
+
 				<div class="uk-margin">
 					<label class="uk-form-label" for="card-diameter">Card Diameter</label>
 					<div class="uk-form-controls">
@@ -66,10 +68,26 @@
 					</div>
 				</div>
 
+				<h5>Printing</h5>
+
+				<div class="uk-margin">
+					<label class="uk-form-label" for="print-cards-per-row">Cards Per Row</label>
+					<div class="uk-form-controls">
+						<input class="uk-input" id="print-cards-per-row" type="number" value="2" min="1" uk-tooltip="title: Number of cards per row on printable pages; pos: top-left">
+					</div>
+				</div>
+
+				<div class="uk-margin">
+					<label class="uk-form-label" for="print-rows-per-page">Rows Per Page</label>
+					<div class="uk-form-controls">
+						<input class="uk-input" id="print-rows-per-page" type="number" value="3" min="1" uk-tooltip="title: Rows per printable page; pos: top-left">
+					</div>
+				</div>
+
 				<button class="uk-button uk-button-default" onclick="dobble2()">Generate</button>
 
 			</form>
-			<h3>Printing</h3>
+			<h3>Printable Pages</h3>
 			<div id="print-button-container"></div>
 			<h3>Cards</h3>
 			<div id="card-container">
