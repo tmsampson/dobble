@@ -41,7 +41,7 @@
 				<div class="uk-margin">
 					<label class="uk-form-label" for="card-diameter">Card Diameter</label>
 					<div class="uk-form-controls">
-						<input class="uk-input" id="card-diameter" type="number" value="400" min="1" uk-tooltip="title: Cards diameter (in pixels); pos: top-left">
+						<input class="uk-input" id="card-diameter" type="number" value="300" min="1" uk-tooltip="title: Cards diameter (in pixels); pos: top-left">
 					</div>
 				</div>
 
@@ -69,11 +69,12 @@
 				<button class="uk-button uk-button-default" onclick="dobble2()">Generate</button>
 
 			</form>
+			<h3>Printing</h3>
+			<div id="print-button-container"></div>
 			<h3>Cards</h3>
 			<div id="card-container">
 			</div>
 			<br style="clear:both" /><br/>
-			<button class="uk-button uk-button-default" onclick="printDiv('card-container')">Print Cards</button>
 			<h3>Raw Output</h3>
 			<textarea class="uk-input" id="d2output" type="text" style="height:300px; line-height: 100%; font-family: Consolas;"></textarea>
 

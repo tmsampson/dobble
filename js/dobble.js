@@ -184,6 +184,11 @@ async function uploadImages(event)
 	}
 }
 
+const printCardCols = 2;
+const printCardRows = 3;
+const printCardsPerPage = printCardCols * printCardRows;
+let cardDivs = [];
+
 async function dobble2(event)
 {
 	// Setup inputs
@@ -284,40 +289,67 @@ async function dobble2(event)
 		container.appendChild(img);
 	};
 
+	cardDivs = [];
 	for(let i = 0; i < cards.length; ++i)
 	{
 		const card = cards[i];
 
 		// Card background
-		let cardBackground = document.createElement("div");
-		cardBackground.className = "card";
-		cardBackground.style.minWidth = cardDiameter + "px";
-		cardBackground.style.maxWidth = cardDiameter + "px";
-		cardBackground.style.minHeight += cardDiameter + "px";
-		cardBackground.style.maxHeight += cardDiameter + "px";
-		cardBackground.style.margin = cardSpacing + "px";
-		cardContainer.appendChild(cardBackground);
+		let cardDiv = document.createElement("div");
+		cardDiv.className = "card";
+		cardDiv.style.minWidth = cardDiameter + "px";
+		cardDiv.style.maxWidth = cardDiameter + "px";
+		cardDiv.style.minHeight += cardDiameter + "px";
+		cardDiv.style.maxHeight += cardDiameter + "px";
+		cardDiv.style.margin = cardSpacing + "px";
+		cardContainer.appendChild(cardDiv);
 
 		// Card images
-		addImage(cardBackground, cardHalfSize, cardHalfSize, imageSize, imageSize, loadedImages[card[0]].data);
+		addImage(cardDiv, cardHalfSize, cardHalfSize, imageSize, imageSize, loadedImages[card[0]].data);
 		for(let j = 0; j < 7; ++j)
 		{
 			const x = cardHalfSize + (imagePositions[j][0] * imageRadius);
 			const y = cardHalfSize + (imagePositions[j][1] * imageRadius);
-			addImage(cardBackground, x, y, imageSize, imageSize, loadedImages[card[j + 1]].data);
+			addImage(cardDiv, x, y, imageSize, imageSize, loadedImages[card[j + 1]].data);
 		}
+
+		// Store card for later
+		cardDivs.push(cardDiv);
 	}
+
+	// Printing
+	const printButtonContainer = document.getElementById("print-button-container");
+	const printPageCount = Math.ceil(cardDivs.length / printCardsPerPage);
+	let printButtonHtml = "";
+	for(let printPageIndex = 0; printPageIndex < printPageCount; ++printPageIndex)
+	{
+		printButtonHtml += "<button class=\"uk-button uk-button-default\" onclick=\"printPage(" + (printPageIndex) + ")\">Page " + (printPageIndex + 1) + "</button>";
+	}
+	printButtonContainer.innerHTML = printButtonHtml;
 }
 
-function printDiv(id)
+function printPage(pageIndex)
 {
-	var divContents = document.getElementById(id).innerHTML;
+	const firstCardIndex = pageIndex * printCardsPerPage;
+	const lastCardIndex = Math.min(firstCardIndex + printCardsPerPage, cardDivs.length);
+	let divContents = "";
+	for(let cardIndex = firstCardIndex; cardIndex < lastCardIndex; ++cardIndex)
+	{
+		if(cardIndex != firstCardIndex && (cardIndex % printCardCols == 0))
+		{
+			divContents += "<br style=\"clear:both\"/><br/>";
+		}
+		const cardDiv = cardDivs[cardIndex];
+		divContents += cardDiv.outerHTML;
+	}
+
 	var a = window.open('', '', '');
 	a.document.write("<html><link rel='stylesheet' href='css/dobble.css'><body>");
+	a.document.write("Page " + (pageIndex + 1) + "<br/>");
 	a.document.write(divContents);
 	a.document.write('</body></html>');
-	a.document.close();
-} 
+	a.document.close();s
+}
 
 function shuffle(array, seed)
 {
