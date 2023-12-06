@@ -281,10 +281,16 @@ async function dobble2(event)
 	// Generate cards
 	const cardDiameter = parseInt(document.getElementById("card-diameter").value);
 	const cardSpacing = parseInt(document.getElementById("card-spacing").value);
-	const imageScale = parseFloat(document.getElementById("image-scale").value);
-	const imageSize = cardDiameter * imageScale;
+	const imageScaleMin = parseFloat(document.getElementById("image-scale-min").value);
+	const imageScaleMax = parseFloat(document.getElementById("image-scale-max").value);
 	const cardHalfSize = cardDiameter * 0.5;
 	const imageRadius = cardDiameter * 0.3;
+
+	// Function for geting random image size
+	function getImageSize()
+	{
+		return cardDiameter * (imageScaleMin + (Math.random() * (imageScaleMax - imageScaleMin)));
+	}
 
 	// Function for adding images to card
 	const addImage = function(container, x, y, w, h, src)
@@ -319,11 +325,13 @@ async function dobble2(event)
 		cardContainer.appendChild(cardDiv);
 
 		// Card images
+		let imageSize = getImageSize();
 		addImage(cardDiv, cardHalfSize, cardHalfSize, imageSize, imageSize, loadedImages[card[0]].data);
 		for(let j = 0; j < 7; ++j)
 		{
 			const x = cardHalfSize + (imagePositions[j][0] * imageRadius);
 			const y = cardHalfSize + (imagePositions[j][1] * imageRadius);
+			imageSize = getImageSize();
 			addImage(cardDiv, x, y, imageSize, imageSize, loadedImages[card[j + 1]].data);
 		}
 
@@ -341,6 +349,8 @@ async function dobble2(event)
 		printButtonHtml += "<button class=\"uk-button uk-button-default\" onclick=\"printPage(" + (printPageIndex) + ")\">Page " + (printPageIndex + 1) + "</button>";
 	}
 	printButtonContainer.innerHTML = printButtonHtml;
+
+	
 }
 
 function printPage(pageIndex)
